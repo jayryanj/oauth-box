@@ -1,5 +1,8 @@
 const router = require("express").Router();
 const { request, response } = require("express");
+const User = require("../models/User");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
 
 /**
  * Endpoint - GET /api/
@@ -12,7 +15,41 @@ router.get("/", (request, response) => {
 
 // Regular register and login endpoints
 router.post("/register", (request, response) => {
-    
+    // Basic validation check
+    if(!(request.body.email && request.body.password)) {
+        return response.status(400).json({message: "Missing required fields"});
+    }
+
+    User.findOne({email: request.body.email}).then(user => {
+        if(user) {
+            return response.status(400).json({message: "Email already exists."});
+        } else {
+            const newUser = new User({
+                name: request.body.name,
+                email: request.body.email,
+                password: request.body.password
+            });
+            
+            newUser.save()
+                .then((user) => {response.json(user)})
+                .catch((error) => {console.error(error)});
+
+            // Hash the password using a salt generated in 12 rounds.
+            bycrpt.genSalt(12, (error, salt) => {
+                bycrpt.hash(newUser.password, salt, (error, hash) => {
+                    if (error) {
+                        console.error("Error while hashing the user password");
+                    } else {
+                        newUser.passsword = hash;
+                        newUser
+                            .save()
+                            .then((user) => {response.json(user)})
+                            .catch((error) => {console.error(error)});
+                    }
+                })
+            })
+        }
+    });
 });
 
 router.post("/login", (request, response) => {
@@ -46,5 +83,6 @@ router.post("/oauth/token", (request, response) => {
 router.get("/user", (request, response) => {
 
 });
+
 
 module.exports = router;
