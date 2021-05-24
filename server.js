@@ -4,12 +4,17 @@ const dotenv = require("dotenv"); // Used for local environment variables
 const controller = require("./api/controller");
 const passport = require("passport");
 const { request } = require("express");
+const User = require("./models/User");
+const LocalStrategy = require("passport-local");
+const { Passport } = require("passport");
 
 // Initialize environment variables from the .env file
 dotenv.config(); 
 const app = express();
 app.use(express.urlencoded({extended: false})); // Parse URL-encoded bodies
 app.use(passport.initialize());
+app.use(passport.session());
+
 
 // Pass API calls to the controller.
 app.use("/api/", controller);
