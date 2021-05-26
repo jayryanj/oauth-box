@@ -1,0 +1,23 @@
+.login-container-main {
+    padding: 7% 20% !important;
+    text-align: center;
+}
+
+.login-container-home {
+    text-align: left;
+}
+
+.login-form {
+    margin-top: 2em !important;
+}
+
+.login-header {
+    margin-top: 0.5em !important;
+}
+
+.login-submit {
+    /*background-color: #FBDA61;
+    background-image: linear-gradient(45deg, #FBDA61 0%, #FF5ACD 100%);*/
+    color: black !important;
+    background-image: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%, #fad0c4 100%);
+}

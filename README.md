@@ -1,5 +1,7 @@
 # OAuth Box
-An authorization web app that simulates and describes the OAuth 2.0 standard.
+An authorization web app that simulates and describes the OAuth 2.0 standard. It aims to show how OAuth 2.0 works using graphics, animations, and articles that describe its flow.
+
+![Logo](./client/src/resources/oauth-box-logo.png)
 
 ## Deployment
 Currently planning to deploy to AWS once a working build is available.

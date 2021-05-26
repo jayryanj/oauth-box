@@ -1,13 +1,23 @@
 import './App.css';
-import { Button } from "@material-ui/core";
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <h1>OAuth Box</h1>
-      <Button color="Primary">Hello world</Button>
-    </div>
-  );
+import Landing from "./pages/Landing";
+import Login from "./pages/Login";
+import NavBar from "./components/NavBar";
+
+class App extends React.Component {
+  render() {
+    return (
+      <div className="App">
+        <Router>
+          <NavBar />
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/login" component={Login} />
+        </Router>
+      </div>
+    );
+  }
 }
 
 export default App;
