@@ -32,7 +32,7 @@ class Login extends React.Component {
                         <TextField variant="outlined" className="login-form" fullWidth id="standard-basic" label="Email" />
                     </div>
                     <div>
-                        <TextField variant="outlined" className="login-form" fullWidth id="standard-basic" label="Password" />
+                        <TextField type="password" variant="outlined" className="login-form" fullWidth id="standard-basic" label="Password" />
                     </div>
                     <div>
                         <Button fullWidth size="large" className="login-form login-submit" >Login</Button>
