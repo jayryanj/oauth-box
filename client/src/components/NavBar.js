@@ -3,7 +3,7 @@ import {
     AppBar, Typography
 } from "@material-ui/core";
 import "../styles/NavBar.css"
-import logo from "../resources/oauth-box-logo.png"
+import logo from "../resources/oauth-box-logo-gradient.png"
 
 class NavBar extends React.Component {
     render() {
