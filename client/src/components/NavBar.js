@@ -9,7 +9,9 @@ class NavBar extends React.Component {
     render() {
         return(
             <AppBar className="navbar" position="static" >
-                <img className="navbar-logo" src={logo} />
+                <a className="navbar-logo-link" href="/">
+                    <img className="navbar-logo" src={logo} />
+                </a>
             </AppBar>
         );
     }

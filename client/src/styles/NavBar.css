@@ -10,3 +10,8 @@
     padding: 20px;
     margin: auto;
 }
+
+.navbar-logo-link {
+    width: fit-content !important;
+    margin: auto;
+}

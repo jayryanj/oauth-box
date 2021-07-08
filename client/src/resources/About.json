@@ -1,0 +1,5 @@
+{
+    "intro": {
+        "OAuth (short for \"Open Authorization\") is a standard or framework for authorization. It allows applications to easily **delegate** authorization and access to protected resources with third-party applications. This enables users to sign into your application using their account from _other_ applications like Google, Facebook, and Apple without revealing their password. For example, when users try to sign into Yelp, they're given the option to use their Google account. Since authorization is being delegated, Yelp won't know their password to their Google account. It also means that your application can have limited access (scopes) resources from these third-party providers."
+    }
+}

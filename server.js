@@ -11,10 +11,20 @@ const { Passport } = require("passport");
 // Initialize environment variables from the .env file
 dotenv.config(); 
 const app = express();
-app.use(express.urlencoded({extended: false})); // Parse URL-encoded bodies
+
+// Parse both JSON and url-encoded bodies
+app.use(express.json()); 
+app.use(express.urlencoded({extended: false}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  }); 
+  
 
 // Pass API calls to the controller.
 app.use("/api/", controller);
@@ -29,7 +39,7 @@ app.get("*", (request, response) => {
 const db = `${process.env.DB}`;
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log("Successfully connected to MongoDB Atlas database"))
-    .catch((err) => console.error(err));
+    //.catch((err) => console.error(err));
 
 
 const port = process.env.PORT || 5000;
