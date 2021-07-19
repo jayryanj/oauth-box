@@ -4,6 +4,13 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const axios = require("axios");
+
+// TODO: Move this to app_clients.json later
+const CLIENT_ID = "000001";
+const CLIENT_SECRET = "cnuO9GpR0siqSZH";
+const REDIRECT = "/about/intro";
+const LOGIN = "/login";
 
 /**
  * Endpoint - GET /api/
@@ -12,6 +19,23 @@ const bcrypt = require("bcryptjs");
  */
 router.get("/", (request, response) => {
     response.status(200).json({message: "Hello, welcome to the OAuth Box api."})
+});
+
+router.get("/test", (request, response) => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+        }
+    };
+
+    axios.get("http://localhost:5000/api/", null, config)
+        .then((res) => {
+            response.status(200).json(res.data);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
+
 });
 
 // Regular register and login endpoints
@@ -56,11 +80,26 @@ router.post("/register", (request, response) => {
     });
 });
 
+
+
+// OAuth 2.0 endpoints
 /**
- * Endpoint - POST /api/login
- * @description - Perform authentication on the given credentials.
+ * Endpoint - GET /api/oauth/authorize
+ * @description - Get the OAuth login page for the third-party service.
  */
-router.post("/login", passport.authenticate("local", { session: false }), (request, response) => {
+router.get("/oauth/authorize", (request, response) => {
+    response.status(200).json({
+        url: LOGIN,
+        scopes : request.body.scopes
+        
+    })
+});
+
+/**
+ * Endpoint - POST /api/oauth/approve
+ * @description - Approves the login through authentication with the given credentials.
+ */
+ router.post("/oauth/approve", passport.authenticate("local", { session: false }), (request, response) => {
     // Failure to pass passport.authenticate() is responded with 401 Unauthorized by default.
     // Anything here is if passport.authenticate() passes
     const user = request.user;
@@ -77,26 +116,8 @@ router.post("/login", passport.authenticate("local", { session: false }), (reque
     });
 });
 
-
-// OAuth 2.0 endpoints
-/**
- * Endpoint - GET /api/oauth/authorize
- * @description - Get the OAuth login page for the third-party service.
- */
-router.get("/oauth/authorize", (request, response) => {
-
-});
-
-/**
- * Endpoint - POST /api/oauth/approve
- * @description - Approves the login through OAuth with username, password, and requestID.
- */
-router.post("/oauth/approve", (request, response) => {
-
-});
-
 router.post("/oauth/token", (request, response) => {
-
+    
 });
 
 

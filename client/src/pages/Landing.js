@@ -25,7 +25,7 @@ class Landing extends React.Component {
                     </Grid>
                     <Grid className="grid-2" item sm={6} xs={12}>
                         <Container className="landing-container">
-                            <h1>Check what's inside the OAuth standard.</h1>
+                            <h1>Check what's inside the OAuth 2.0 standard.</h1>
                             <Container className="landing-description-container">
                                 <p className="landing-description">
                                     OAuth Box is a simple way to learn about the most widely-used authentication standard on the Web. Follow our login simulation to see how OAuth works.

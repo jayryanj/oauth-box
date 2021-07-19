@@ -3,35 +3,33 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv"); // Used for local environment variables
 const controller = require("./api/controller");
 const passport = require("passport");
-const { request } = require("express");
-const User = require("./models/User");
-const LocalStrategy = require("passport-local");
-const { Passport } = require("passport");
+
 
 // Initialize environment variables from the .env file
 dotenv.config(); 
-const app = express();
+const clientApp = express(); // client client application server
+const authServer = express(); // authorization server for
 
 // Parse both JSON and url-encoded bodies
-app.use(express.json()); 
-app.use(express.urlencoded({extended: false}));
+authServer.use(express.json()); 
+authServer.use(express.urlencoded({extended: false}));
 
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.use(function(req, res, next) {
+authServer.use(passport.initialize());
+authServer.use(passport.session());
+  
+authServer.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
-  }); 
+}); 
   
-
 // Pass API calls to the controller.
-app.use("/api/", controller);
+authServer.use("/api/", controller);
+clientApp.use("/api/", controller);
 
 // For client calls, send the static build files.
-app.use(express.static("client/build"));
-app.get("*", (request, response) => {
+clientApp.use(express.static("client/build"));
+clientApp.get("*", (request, response) => {
     response.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 })
 
@@ -42,6 +40,9 @@ mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
     //.catch((err) => console.error(err));
 
 
-const port = process.env.PORT || 5000;
-app.listen(port, () => console.log(`Server running. Listening on port: ${port}`));
+const clientAppPort = process.env.PORT || 8080;
+const authServerPort = 5000;
+
+clientApp.listen(clientAppPort, () => console.log(`Client server running. Listening on port: ${clientAppPort}`));
+authServer.listen(authServerPort, () => console.log(`Authorization server running. Listening on port: ${authServerPort}`));
 
