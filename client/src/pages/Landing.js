@@ -32,7 +32,7 @@ class Landing extends React.Component {
                                 </p>
                             </Container>
 
-                            <Button className="landing-button" component={NavLink} to="/login" color="primary">
+                            <Button className="landing-button" component={NavLink} to="/simulation" color="primary">
                                 Check it out<ArrowForwardOutlinedIcon />
                             </Button>
                         </Container>

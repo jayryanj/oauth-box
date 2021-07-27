@@ -91,8 +91,11 @@ router.get("/oauth/authorize", (request, response) => {
     response.status(200).json({
         url: LOGIN,
         scopes : request.body.scopes
-        
     })
+});
+
+router.get("/oauth/redirect", (request, response) => {
+    response.redirect(`http://localhost:3000/login`); // Need to change this for production
 });
 
 /**
