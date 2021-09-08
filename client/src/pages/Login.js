@@ -46,7 +46,7 @@ class Login extends React.Component {
             password: this.state.password
         }
         
-        axios.post("/api/login", data, config)
+        axios.post("/api/oauth/approve", data, config)
             .then((response) => {
                 if(response.data.success) {
                     this.setState({isAuthenticated: true});
@@ -75,11 +75,11 @@ class Login extends React.Component {
                         </Container>
     
                         <Typography className="login-header" variant="h3">
-                            <b>Log in</b> to OAuth Box
+                            <b>Log in</b> to Third-Party Service
                         </Typography>
-                        <p>
-                            Don't have an account? <Link>Register</Link>
-                        </p>
+
+
+                        
                         <form onSubmit={this.onSubmit} noValidate autoComplete="off">
                             <div>
                                 <TextField onChange={this.onChange} name="email" variant="outlined" className="login-form" fullWidth id="standard-basic" label="Email" />
@@ -91,7 +91,14 @@ class Login extends React.Component {
                                 <Button type="submit" fullWidth size="large" className="login-form login-submit" >Login</Button>
                             </div>
                         </form>
+
+                        <p className="login-text">
+                            By continuing, you agree to share your information from this third-party service with OAuth Box.
+                        </p>
+                        
+
                     </Container>
+                    
                 </Fade>
             );
         }

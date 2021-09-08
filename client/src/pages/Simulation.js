@@ -5,7 +5,8 @@ import {
     Container,
     Typography,
     TextField,
-    Fade
+    Fade,
+    Link
 } from "@material-ui/core";
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
 
@@ -27,6 +28,22 @@ class Simulation extends React.Component {
                 <Typography className="login-header" variant="h3">
                     <b>Log in</b> to OAuth Box
                 </Typography>
+
+                <p>
+                    This is a typical login page. For this demonstration, it's disabled. Instead, use OAuth by logging in  with the third-party application!
+                </p>
+
+                <form noValidate autoComplete="off">
+                    <div>
+                        <TextField disabled onChange={this.onChange} name="email" className="login-form" fullWidth id="standard-basic" label="Email" />
+                    </div>
+                    <div>
+                        <TextField disabled onChange={this.onChange} name="password" type="password" className="login-form" fullWidth id="standard-basic" label="Password" />
+                    </div>
+                    <div>
+                        <Button disabled type="submit" fullWidth size="large" className="login-form login-disabled" >Login</Button>
+                    </div>
+                </form>
 
                 <a href="http://localhost:8080/api/oauth/redirect">
                 <Button type="submit" fullWidth size="large" className="login-form login-submit" >

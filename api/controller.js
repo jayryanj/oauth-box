@@ -35,6 +35,8 @@ router.get("/test", (request, response) => {
         .catch((error) => {
             console.error(error);
         })
+    
+    console.log("Hello");
 
 });
 

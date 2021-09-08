@@ -22,3 +22,14 @@
     -webkit-box-shadow: 5px 5px 26px -11px rgba(0,0,0,0.71); 
     box-shadow: 5px 5px 26px -11px rgba(0,0,0,0.71);
 }
+
+.login-disabled {
+    background-color: rgb(231, 231, 231) !important;
+
+    color: rgb(109, 109, 109) !important;
+}
+
+.login-text {
+    margin-top: 3em;
+    color: gray;
+}
