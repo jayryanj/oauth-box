@@ -46,7 +46,7 @@ class Login extends React.Component {
             password: this.state.password
         }
         
-        axios.post("/api/oauth/approve", data, config)
+        axios.post("/api/oauth/authorize", data, config)
             .then((response) => {
                 if(response.data.success) {
                     this.setState({isAuthenticated: true});
