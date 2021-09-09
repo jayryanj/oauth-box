@@ -45,7 +45,7 @@ class Simulation extends React.Component {
                     </div>
                 </form>
 
-                <a href="http://localhost:8080/api/oauth/redirect">
+                <a href="http://localhost:8080/api/login">
                 <Button type="submit" fullWidth size="large" className="login-form login-submit" >
                     Continue with 3rd party app
                 </Button>

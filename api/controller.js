@@ -21,23 +21,26 @@ router.get("/", (request, response) => {
     response.status(200).json({message: "Hello, welcome to the OAuth Box api."})
 });
 
-router.get("/test", (request, response) => {
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-        }
-    };
+/**
+ * Endpoint - GET /api/login
+ * @description - Will initiate OAuth 2.0 by redirecting user to the third-party authorization server.
+ */
+router.get("/login", (request, response) => {
+    const response_type = "code";
+    const client_id = "9338563593176882"; 
+    const scope = "name";
+    const redirect_uri = "";
+    const state = "eqq8wOkP9e";
 
-    axios.get("http://localhost:5000/api/", null, config)
-        .then((res) => {
-            response.status(200).json(res.data);
-        })
-        .catch((error) => {
-            console.error(error);
-        })
-    
-    console.log("Hello");
+    const url = `http://localhost:5000/api/oauth/authorize?response_type=${scope}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`;
+    response.redirect(url);
 
+});
+
+router.get("/callback", (request, response) => {
+    const code = request.query.code;
+    console.log(code);
+    response.redirect("http://localhost:3000/about/intro") // Need to change this in production/
 });
 
 // Regular register and login endpoints
@@ -83,20 +86,14 @@ router.post("/register", (request, response) => {
 });
 
 
-
+// ==========================================================================================================================
 // OAuth 2.0 endpoints
 /**
  * Endpoint - GET /api/oauth/authorize
  * @description - Get the OAuth login page for the third-party service.
  */
 router.get("/oauth/authorize", (request, response) => {
-    response.status(200).json({
-        url: LOGIN,
-        scopes : request.body.scopes
-    })
-});
-
-router.get("/oauth/redirect", (request, response) => {
+    console.log("Hello from Oauth")
     response.redirect(`http://localhost:3000/login`); // Need to change this for production
 });
 
@@ -109,8 +106,8 @@ router.get("/oauth/redirect", (request, response) => {
     // Anything here is if passport.authenticate() passes
     const user = request.user;
 
-    console.log(`User: { Name: "${user.name}", email: "${user.email}" } successfully logged in.`)
-    response.json({
+    console.log(`User: { Name: "${user.name}", email: "${user.email}" } successfully logged in.`);
+    /*response.json({
         success: true,
         message: "Successful login", 
         user: {
@@ -118,7 +115,7 @@ router.get("/oauth/redirect", (request, response) => {
             name: user.name,
             email: user.email
         }
-    });
+    });*/
 });
 
 router.post("/oauth/token", (request, response) => {
