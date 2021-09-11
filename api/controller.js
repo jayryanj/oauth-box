@@ -29,7 +29,7 @@ router.get("/login", (request, response) => {
     const response_type = "code";
     const client_id = "9338563593176882"; 
     const scope = "name";
-    const redirect_uri = "http://localhost:3000/about/intro"; // Need to URL encode this
+    const redirect_uri = encodeURIComponent("http://localhost:3000/about/intro"); // Need to URL encode this
     const state = "eqq8wOkP9e";
 
     const url = `http://localhost:5000/api/oauth/authorize?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`;
@@ -96,7 +96,7 @@ router.get("/oauth/authorize", (request, response) => {
     const response_type = request.query.response_type;
     const client_id = request.query.client_id; 
     const scope = request.query.scope;
-    const redirect_uri = request.query.redirect_uri;
+    const redirect_uri = encodeURIComponent(request.query.redirect_uri);
     const state = request.query.state;
     response.redirect(`http://localhost:3000/login?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`); // Need to change this for production
 });

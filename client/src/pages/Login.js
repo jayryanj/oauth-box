@@ -13,15 +13,23 @@ import Container from "@material-ui/core/Container";
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
 import axios from "axios";
 
-
 class Login extends React.Component {
     constructor(props) {
         super(props); // Not really important right now
 
+        // Grab the query parameters from the URI to pass back to /authorize endpoint
+        const params = new URLSearchParams(this.props.location.search);
+
         this.state = {
             isAuthenticated: false, // For later use ith JWT
             email: "",
-            password: ""
+            password: "",
+            response_type: params.get("response_type"),
+            client_id: params.get("client_id"),
+            scope: params.get("scope"),
+            redirect_uri: params.get("redirect_uri"),
+            oauth_state: params.get("state"),
+            num: 10
         }
 
         this.onChange = this.onChange.bind(this);
@@ -38,12 +46,17 @@ class Login extends React.Component {
         const config = {
             headers: {
                 "Content-Type": "application/json",
+                "response_type": this.state.response_type,
+                "client_id": this.state.client_id,
+                "scope": this.state.scope,
+                "redirect_uri": this.state.redirect_uri,
+                "state": this.state.oauth_state
             }
         };
 
         const data = {
             email: this.state.email,
-            password: this.state.password
+            password: this.state.password,
         }
         
         axios.post("/api/oauth/authorize", data, config)
