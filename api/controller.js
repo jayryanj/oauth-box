@@ -117,7 +117,8 @@ router.get("/oauth/authorize", (request, response) => {
     console.log(`User: { Name: "${user.name}", email: "${user.email}" } successfully logged in.`);
     // Client needs to be registered with the authorization server.
     Client.findOne({ clientID: client_id }).then((client) => {
-        if (client) {
+        if (client && client.redirectURI === request.header("redirect_uri")) {
+            console.log(client);
             response.json({
                 success: true,
                 message: "Successful login", 
@@ -128,7 +129,10 @@ router.get("/oauth/authorize", (request, response) => {
                 }
             });
         } else {
-            response.sendStatus(403);
+            response.status(403).json({
+                success: false,
+                message: "Incorrect client credentials"
+            });
         }
     })
     
