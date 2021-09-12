@@ -1,10 +1,12 @@
 const router = require("express").Router();
 const User = require("../models/User");
+const Client = require("../models/Client");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const axios = require("axios");
+const { Mongoose } = require("mongoose");
 
 // TODO: Move this to app_clients.json later
 const CLIENT_ID = "000001";
@@ -98,6 +100,7 @@ router.get("/oauth/authorize", (request, response) => {
     const scope = request.query.scope;
     const redirect_uri = encodeURIComponent(request.query.redirect_uri);
     const state = request.query.state;
+
     response.redirect(`http://localhost:3000/login?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`); // Need to change this for production
 });
 
@@ -109,17 +112,27 @@ router.get("/oauth/authorize", (request, response) => {
     // Failure to pass passport.authenticate() is responded with 401 Unauthorized by default.
     // Anything here is if passport.authenticate() passes
     const user = request.user;
+    const client_id = request.header("client_id");
 
     console.log(`User: { Name: "${user.name}", email: "${user.email}" } successfully logged in.`);
-    response.json({
-        success: true,
-        message: "Successful login", 
-        user: {
-            _id: user._id, 
-            name: user.name,
-            email: user.email
+    // Client needs to be registered with the authorization server.
+    Client.findOne({ clientID: client_id }).then((client) => {
+        if (client) {
+            response.json({
+                success: true,
+                message: "Successful login", 
+                user: {
+                    _id: user._id, 
+                    name: user.name,
+                    email: user.email
+                }
+            });
+        } else {
+            response.sendStatus(403);
         }
-    });
+    })
+    
+
 });
 
 router.post("/oauth/token", (request, response) => {
