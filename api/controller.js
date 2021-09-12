@@ -122,6 +122,7 @@ router.get("/oauth/authorize", (request, response) => {
             response.json({
                 success: true,
                 message: "Successful login", 
+                redirect_uri: client.redirectURI,
                 user: {
                     _id: user._id, 
                     name: user.name,
