@@ -10,6 +10,7 @@ import {
     Typography
 } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
+import Confirmation from "../components/Confirmation";
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
 import axios from "axios";
 
@@ -29,7 +30,7 @@ class Login extends React.Component {
             scope: params.get("scope"),
             redirect_uri: params.get("redirect_uri"),
             oauth_state: params.get("state"),
-            num: 10
+            code: undefined
         }
 
         this.onChange = this.onChange.bind(this);
@@ -62,6 +63,8 @@ class Login extends React.Component {
         axios.post("/api/oauth/authorize", data, config)
             .then((response) => {
                 if(response.data.success) {
+                    console.log(response.data);
+                    this.setState({code: response.data.code});
                     this.setState({isAuthenticated: true});
                     console.log(this.state);
                 }
@@ -75,7 +78,7 @@ class Login extends React.Component {
     render() {
         if (this.state.isAuthenticated) {
             return(
-                <Redirect to="/about/intro" />
+                <Redirect to="/login/authenticated" />
             );
         } else {
             return(

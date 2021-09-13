@@ -1,12 +1,15 @@
 const router = require("express").Router();
+// MongoDB stuff
+const { Mongoose } = require("mongoose");
 const User = require("../models/User");
 const Client = require("../models/Client");
+const Grant = require("../models/Grant");
+
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const axios = require("axios");
-const { Mongoose } = require("mongoose");
 
 // TODO: Move this to app_clients.json later
 const CLIENT_ID = "000001";
@@ -115,20 +118,29 @@ router.get("/oauth/authorize", (request, response) => {
     const client_id = request.header("client_id");
 
     console.log(`User: { Name: "${user.name}", email: "${user.email}" } successfully logged in.`);
-    // Client needs to be registered with the authorization server.
+    // Client needs to be registered with the authorization server.jj
     Client.findOne({ clientID: client_id }).then((client) => {
         if (client && client.redirectURI === request.header("redirect_uri")) {
-            console.log(client);
-            response.json({
-                success: true,
-                message: "Successful login", 
-                redirect_uri: client.redirectURI,
-                user: {
-                    _id: user._id, 
-                    name: user.name,
-                    email: user.email
-                }
+            console.log(client); // Remove
+
+            const grant = new Grant ({
+                code: "K44rleghuvTWteKEZN6d", // Grant code is hard-coded for simulation purposes.
             });
+
+            grant.save().then(() => {
+                response.json({
+                    success: true,
+                    message: "Successful login", 
+                    redirect_uri: client.redirectURI,
+                    code: grant.code,
+                    user: {
+                        _id: user._id, 
+                        name: user.name,
+                        email: user.email
+                    }
+                });
+            })
+
         } else {
             response.status(403).json({
                 success: false,

@@ -46,9 +46,9 @@ class Simulation extends React.Component {
                 </form>
 
                 <a href="http://localhost:8080/api/login">
-                <Button type="submit" fullWidth size="large" className="login-form login-submit" >
-                    Continue with 3rd party app
-                </Button>
+                    <Button type="submit" fullWidth size="large" className="login-form login-submit" >
+                        Continue with 3rd party app
+                    </Button>
                 </a>
             </Container>
         </Fade>
