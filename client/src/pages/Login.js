@@ -78,7 +78,7 @@ class Login extends React.Component {
     render() {
         if (this.state.isAuthenticated) {
             return(
-                <Redirect to="/login/authenticated" />
+                <Confirmation code={this.state.code} redirect_uri={this.state.redirect_uri} />
             );
         } else {
             return(

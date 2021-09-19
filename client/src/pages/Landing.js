@@ -47,23 +47,3 @@ class Landing extends React.Component {
     }
 }
 export default Landing;
-
-/**
- * class Landing extends React.Component {
-    render() {
-        return(
-            <Grid container spacing={0}>
-                <Grid className="grid-1" item sm={6} xs={12}>
-                    <Container>
-                        <h1>OAuth Box</h1>
-                        <h2>Landing</h2>
-                    </Container>
-                </Grid>
-                <Grid className="grid-2" item sm={6} xs={12}>
-                    <Button component={NavLink} to="/login" color="primary">Click here for Login</Button>
-                </Grid>
-            </Grid>
-        );
-    }
-}
- */

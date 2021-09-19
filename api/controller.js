@@ -34,7 +34,7 @@ router.get("/login", (request, response) => {
     const response_type = "code";
     const client_id = "9338563593176882"; 
     const scope = "name";
-    const redirect_uri = encodeURIComponent("http://localhost:3000/about/intro"); // Need to URL encode this
+    const redirect_uri = encodeURIComponent("http://localhost:8080/api/callback"); // Need to URL encode this
     const state = "eqq8wOkP9e";
 
     const url = `http://localhost:5000/api/oauth/authorize?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`;
@@ -44,7 +44,8 @@ router.get("/login", (request, response) => {
 
 router.get("/callback", (request, response) => {
     const code = request.query.code;
-    console.log(code);
+    console.log(`Code is: ${code}`);
+    // Call the \token endpoint here then redirect after confirmation.
     response.redirect("http://localhost:3000/about/intro") // Need to change this in production/
 });
 
