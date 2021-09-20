@@ -36,7 +36,7 @@ router.get("/login", (request, response) => {
     const scope = "name";
     const redirect_uri = encodeURIComponent("http://localhost:8080/api/callback"); // Need to URL encode this
     const state = "eqq8wOkP9e";
-
+    // Build the redirect URL to the /authorize endpoint with the above query values
     const url = `http://localhost:5000/api/oauth/authorize?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`;
     response.redirect(url);
 
@@ -46,7 +46,16 @@ router.get("/callback", (request, response) => {
     const code = request.query.code;
     console.log(`Code is: ${code}`);
     // Call the \token endpoint here then redirect after confirmation.
-    response.redirect("http://localhost:3000/about/intro") // Need to change this in production/
+    axios.post(`http://localhost:5000/api/oauth/token`, {
+        grant_code: code
+    })
+    .then((axiosRes) => {
+        console.log(axiosRes);
+        response.redirect("http://localhost:3000/about/intro") // Need to change this in production/
+    })
+    .catch((error) => {
+        console.log(error);
+    })
 });
 
 // Regular register and login endpoints
@@ -153,8 +162,12 @@ router.get("/oauth/authorize", (request, response) => {
 
 });
 
-router.post("/oauth/token", (request, response) => {
-    
+router.get("/oauth/token", (request, response) => {
+    console.log("Hello from the token endpoint")
+    response.status(200).json({
+        success: true,
+        message: "Henlo"
+    })
 });
 
 
