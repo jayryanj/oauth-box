@@ -4,6 +4,7 @@ const { Mongoose } = require("mongoose");
 const User = require("../models/User");
 const Client = require("../models/Client");
 const Grant = require("../models/Grant");
+const Token = require("../models/Token");
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
@@ -17,6 +18,7 @@ const CLIENT_SECRET = "cnuO9GpR0siqSZH";
 const REDIRECT = "/about/intro";
 const LOGIN = "/login";
 
+
 /**
  * Endpoint - GET /api/
  * @description - Will return a welcome message. Mostly for testing.
@@ -25,6 +27,7 @@ const LOGIN = "/login";
 router.get("/", (request, response) => {
     response.status(200).json({message: "Hello, welcome to the OAuth Box api."})
 });
+
 
 /**
  * Endpoint - GET /api/login
@@ -42,21 +45,25 @@ router.get("/login", (request, response) => {
 
 });
 
+/**
+ * Endpoint - GET /api/callback
+ * @description - Callback endpoint that the authorization server will redirect the user to.
+ */
 router.get("/callback", (request, response) => {
     const code = request.query.code;
-    console.log(`Code is: ${code}`);
+
     // Call the \token endpoint here then redirect after confirmation.
     axios.post(`http://localhost:5000/api/oauth/token`, {
-        grant_code: code
+        code: code
     })
     .then((axiosRes) => {
-        console.log(axiosRes);
         response.redirect("http://localhost:3000/about/intro") // Need to change this in production/
     })
     .catch((error) => {
         console.log(error);
     })
 });
+
 
 // Regular register and login endpoints
 /**
@@ -117,6 +124,7 @@ router.get("/oauth/authorize", (request, response) => {
     response.redirect(`http://localhost:3000/login?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`); // Need to change this for production
 });
 
+
 /**
  * Endpoint - POST /api/oauth/approve
  * @description - Approves the login through authentication with the given credentials.
@@ -131,10 +139,9 @@ router.get("/oauth/authorize", (request, response) => {
     // Client needs to be registered with the authorization server.jj
     Client.findOne({ clientID: client_id }).then((client) => {
         if (client && client.redirectURI === request.header("redirect_uri")) {
-            console.log(client); // Remove
 
             const grant = new Grant ({
-                code: "K44rleghuvTWteKEZN6d", // Grant code is hard-coded for simulation purposes.
+                code: "K44rleghuvTWteKEZN6d" // Grant code is hard-coded for simulation purposes.
             });
 
             grant.save().then(() => {
@@ -162,11 +169,26 @@ router.get("/oauth/authorize", (request, response) => {
 
 });
 
-router.get("/oauth/token", (request, response) => {
-    console.log("Hello from the token endpoint")
-    response.status(200).json({
-        success: true,
-        message: "Henlo"
+/**
+ * Endpoint - POST /api/oauth/token
+ * @description - Receives an authorization grant and responds with an access token.
+ */
+router.post("/oauth/token", (request, response) => {
+    Grant.findOneAndDelete({ code: request.body.code}).then((grant) => {
+        const token = jwt.sign({
+            data: 'foo'
+        }, 'secret', { expiresIn: '1h'});
+
+        const accessToken = new Token({
+            token: token
+        })
+
+        accessToken.save().then(() => {
+            response.status(200).json({
+                success: true,
+                access_token: token
+            });
+        })
     })
 });
 
