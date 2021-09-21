@@ -25,6 +25,7 @@ const LOGIN = "/login";
  * 
  */
 router.get("/", (request, response) => {
+    console.log("GET /api/");
     response.status(200).json({message: "Hello, welcome to the OAuth Box api."})
 });
 
@@ -39,6 +40,9 @@ router.get("/login", (request, response) => {
     const scope = "name";
     const redirect_uri = encodeURIComponent("http://localhost:8080/api/callback"); // Need to URL encode this
     const state = "eqq8wOkP9e";
+
+    console.log("GET /api/login");
+
     // Build the redirect URL to the /authorize endpoint with the above query values
     const url = `http://localhost:5000/api/oauth/authorize?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`;
     response.redirect(url);
@@ -51,6 +55,8 @@ router.get("/login", (request, response) => {
  */
 router.get("/callback", (request, response) => {
     const code = request.query.code;
+
+    console.log("GET /api/callback");
 
     // Call the \token endpoint here then redirect after confirmation.
     axios.post(`http://localhost:5000/api/oauth/token`, {
@@ -71,6 +77,8 @@ router.get("/callback", (request, response) => {
  * 
  */
 router.post("/register", (request, response) => {
+    console.log("POST /api/register");
+
     // Basic validation check
     if(!(request.body.email && request.body.password && request.body.name)) {
         return response.status(400).json({success: false, message: "Missing required fields"});
@@ -121,6 +129,8 @@ router.get("/oauth/authorize", (request, response) => {
     const redirect_uri = encodeURIComponent(request.query.redirect_uri);
     const state = request.query.state;
 
+    console.log("GET /api/oauth/authorize");
+
     response.redirect(`http://localhost:3000/login?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`); // Need to change this for production
 });
 
@@ -132,8 +142,10 @@ router.get("/oauth/authorize", (request, response) => {
  router.post("/oauth/authorize", passport.authenticate("local", { session: false }), (request, response) => {
     // Failure to pass passport.authenticate() is responded with 401 Unauthorized by default.
     // Anything here is if passport.authenticate() passes
+    console.log("POST /api/oauth/approve");
     const user = request.user;
     const client_id = request.header("client_id");
+    console.log("POST /api/oauth/authorize");
 
     console.log(`User: { Name: "${user.name}", email: "${user.email}" } successfully logged in.`);
     // Client needs to be registered with the authorization server.jj
@@ -174,6 +186,8 @@ router.get("/oauth/authorize", (request, response) => {
  * @description - Receives an authorization grant and responds with an access token.
  */
 router.post("/oauth/token", (request, response) => {
+    console.log("POST /api/oauth/token");
+
     Grant.findOneAndDelete({ code: request.body.code}).then((grant) => {
         const token = jwt.sign({
             data: 'foo'
@@ -188,13 +202,14 @@ router.post("/oauth/token", (request, response) => {
                 success: true,
                 access_token: token
             });
-        })
+        });
     })
 });
 
 
 // Protected resource endpoints - only authorized requests are allowed from either regular login or OAuth 2.0
 router.get("/user", passport.authenticate(),  (request, response) => {
+    console.log("GET /api/user");
 
 });
 
