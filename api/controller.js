@@ -189,20 +189,27 @@ router.post("/oauth/token", (request, response) => {
     console.log("POST /api/oauth/token");
 
     Grant.findOneAndDelete({ code: request.body.code}).then((grant) => {
-        const token = jwt.sign({
-            data: 'foo'
-        }, 'secret', { expiresIn: '1h'});
-
-        const accessToken = new Token({
-            token: token
-        })
-
-        accessToken.save().then(() => {
-            response.status(200).json({
-                success: true,
-                access_token: token
+        if(grant) {
+            const token = jwt.sign({
+                data: 'foo'
+            }, 'secret', { expiresIn: '1h'});
+    
+            const accessToken = new Token({
+                token: token
+            })
+    
+            accessToken.save().then(() => {
+                response.status(200).json({
+                    success: true,
+                    access_token: token
+                });
             });
-        });
+        } else {
+            // If the grant isn't found, then respond back to client with 403 Forbidden
+            response.status(403).json({
+                success: false
+            });
+        }
     })
 });
 
