@@ -148,6 +148,7 @@ router.get("/oauth/authorize", (request, response) => {
     console.log("POST /api/oauth/authorize");
 
     console.log(`User: { Name: "${user.name}", email: "${user.email}" } successfully logged in.`);
+
     // Client needs to be registered with the authorization server.jj
     Client.findOne({ clientID: client_id }).then((client) => {
         if (client && client.redirectURI === request.header("redirect_uri")) {
@@ -186,12 +187,13 @@ router.get("/oauth/authorize", (request, response) => {
  * @description - Receives an authorization grant and responds with an access token.
  */
 router.post("/oauth/token", (request, response) => {
-    console.log("POST /api/oauth/token");
+    console.log("POST /api/oauth/token"); // DEBUG
 
+    // Grants are one-time-use
     Grant.findOneAndDelete({ code: request.body.code}).then((grant) => {
         if(grant) {
             const token = jwt.sign({
-                data: 'foo'
+                name: 'foo'
             }, 'secret', { expiresIn: '1h'});
     
             const accessToken = new Token({
