@@ -154,7 +154,9 @@ router.get("/oauth/authorize", (request, response) => {
         if (client && client.redirectURI === request.header("redirect_uri")) {
 
             const grant = new Grant ({
-                code: "K44rleghuvTWteKEZN6d" // Grant code is hard-coded for simulation purposes.
+                code: "K44rleghuvTWteKEZN6d", // Grant code is hard-coded for simulation purposes.
+                user: user.email,
+                scope: "name" // TODO: change from hard-coded value to the passed value.
             });
 
             grant.save().then(() => {

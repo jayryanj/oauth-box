@@ -9,6 +9,14 @@ const GrantSchema = new Schema({
     dateIssued: {
         type: Date,
         default: Date.now,
+    },
+    user: {
+        type: String,
+        require: true
+    },
+    scope: {
+        type: String,
+        require: true
     }
 });
 
