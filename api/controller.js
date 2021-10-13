@@ -62,8 +62,23 @@ router.get("/callback", (request, response) => {
     axios.post(`http://localhost:5000/api/oauth/token`, {
         code: code
     })
-    .then((axiosRes) => {
-        response.redirect("http://localhost:3000/about/intro") // Need to change this in production/
+    .then((tokenResponse) => {
+        const token = tokenResponse.data.access_token; // Access token 
+
+        axios.get("http://localhost:5000/api/user/", {
+            headers: {
+                'access_token': token
+            }
+        })
+        .then((userResponse) => {
+            console.log(userResponse) // DEBUG
+            response.redirect("http://localhost:3000/about/intro") // TODO: Need to change this in production/
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+        
     })
     .catch((error) => {
         console.log(error);
@@ -150,6 +165,7 @@ router.get("/oauth/authorize", (request, response) => {
     console.log(`User: { Name: "${user.name}", email: "${user.email}" } successfully logged in.`);
 
     // Client needs to be registered with the authorization server.jj
+    // TODO: delegate client authentication to passport.js
     Client.findOne({ clientID: client_id }).then((client) => {
         if (client && client.redirectURI === request.header("redirect_uri")) {
 
@@ -192,6 +208,7 @@ router.post("/oauth/token", (request, response) => {
     console.log("POST /api/oauth/token"); // DEBUG
 
     // Grants are one-time-use
+    // TODO: Delegate Grant authorization to passport.js -- this would mean calling passport.authenticate()
     Grant.findOneAndDelete({ code: request.body.code}).then((grant) => {
         if(grant) {
             const token = jwt.sign({
@@ -219,9 +236,10 @@ router.post("/oauth/token", (request, response) => {
 
 
 // Protected resource endpoints - only authorized requests are allowed from either regular login or OAuth 2.0
-router.get("/user", passport.authenticate(),  (request, response) => {
+// TODO: Delegate token authentication to passport.js by calling passpor.authenticate() (see the /api/oauth/authorize endpoint)
+router.get("/user",  (request, response) => {
     console.log("GET /api/user");
-
+    response.status(200).json({ message: "Hello from /user endpoint" })
 });
 
 
