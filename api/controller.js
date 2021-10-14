@@ -239,8 +239,14 @@ router.post("/oauth/token", (request, response) => {
 // TODO: Delegate token authentication to passport.js by calling passpor.authenticate() (see the /api/oauth/authorize endpoint)
 router.get("/user",  (request, response) => {
     console.log("GET /api/user");
-    console.log(request.headers.access_token)
-    response.status(200).json({ message: "Hello from /user endpoint" })
+    const access_token = request.headers.access_token
+    Token.findOne({token: access_token}).then((token) => {
+        if (token) {
+            console.log("Found token") // DEBUG
+            response.status(200).json({ message: "Hello from /user endpoint" })
+        }
+    })
+    
 });
 
 
