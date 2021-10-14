@@ -12,7 +12,7 @@ const TokenSchema = new Schema({
     },
     expire: {
         type: Date,
-        default: Date.now
+        default: new Date((new Date()).getTime() + 6*60*60000) // Expires in 6 hours
     }
 });
 

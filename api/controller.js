@@ -71,7 +71,7 @@ router.get("/callback", (request, response) => {
             }
         })
         .then((userResponse) => {
-            console.log(userResponse) // DEBUG
+            // console.log(userResponse) // DEBUG
             response.redirect("http://localhost:3000/about/intro") // TODO: Need to change this in production/
         })
         .catch((error) => {
@@ -239,6 +239,7 @@ router.post("/oauth/token", (request, response) => {
 // TODO: Delegate token authentication to passport.js by calling passpor.authenticate() (see the /api/oauth/authorize endpoint)
 router.get("/user",  (request, response) => {
     console.log("GET /api/user");
+    console.log(request.headers.access_token)
     response.status(200).json({ message: "Hello from /user endpoint" })
 });
 
