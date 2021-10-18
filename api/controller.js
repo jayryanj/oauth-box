@@ -45,6 +45,8 @@ router.get("/login", (request, response) => {
 
     // Build the redirect URL to the /authorize endpoint with the above query values
     const url = `http://localhost:5000/api/oauth/authorize?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`;
+
+    console.log("Redirecting user to the OAuth authorize endpoint...")
     response.redirect(url);
 
 });
@@ -55,15 +57,16 @@ router.get("/login", (request, response) => {
  */
 router.get("/callback", (request, response) => {
     const code = request.query.code;
-
     console.log("GET /api/callback");
 
+    console.log("Exchanging grant for access token from token endpoint...")
     // Call the \token endpoint here then redirect after confirmation.
     axios.post(`http://localhost:5000/api/oauth/token`, {
         code: code
     })
     .then((tokenResponse) => {
         const token = tokenResponse.data.access_token; // Access token 
+        console.log("Access token received. Contacting resource server for user data...")
 
         axios.get("http://localhost:5000/api/user/", {
             headers: {
@@ -71,7 +74,6 @@ router.get("/callback", (request, response) => {
             }
         })
         .then((userResponse) => {
-            console.log(userResponse) // DEBUG
             response.redirect("http://localhost:3000/about/intro") // TODO: Need to change this in production/
         })
         .catch((error) => {
@@ -146,6 +148,7 @@ router.get("/oauth/authorize", (request, response) => {
 
     console.log("GET /api/oauth/authorize");
 
+    console.log("Redirecting user to client login page...")
     response.redirect(`http://localhost:3000/login?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`); // Need to change this for production
 });
 
@@ -162,7 +165,7 @@ router.get("/oauth/authorize", (request, response) => {
     const client_id = request.header("client_id");
     console.log("POST /api/oauth/authorize");
 
-    console.log(`User: { Name: "${user.name}", email: "${user.email}" } successfully logged in.`);
+    console.log(`User: { name: "${user.name}", email: "${user.email}" } successfully logged in.`);
 
     // Client needs to be registered with the authorization server.jj
     // TODO: delegate client authentication to passport.js
@@ -174,6 +177,8 @@ router.get("/oauth/authorize", (request, response) => {
                 user: user.email,
                 scope: "name" // TODO: change from hard-coded value to the passed value.
             });
+
+            console.log(`Issuing authorization grant to Client: { name: "${client.name}", clientID: ${client.clientID} } for User: { name: "${user.name}", email: "${user.email}" }`);
 
             grant.save().then(() => {
                 response.json({
@@ -200,12 +205,15 @@ router.get("/oauth/authorize", (request, response) => {
  * @description - Receives an authorization grant and responds with an access token.
  */
 router.post("/oauth/token", (request, response) => {
-    console.log("POST /api/oauth/token"); // DEBUG
+    console.log("POST /api/oauth/token");
 
-    // Grants are one-time-use
+    // Grants are one-time-use. Once a grant is received, delete it and return a multi-use token.
     // TODO: Delegate Grant authorization to passport.js -- this would mean calling passport.authenticate()
     Grant.findOneAndDelete({ code: request.body.code}).then((grant) => {
+        console.log(`Grant: { code: ${grant.code} } received. Exchanging for access token...`)
         if(grant) {
+
+            // Create a JWT token for the access token, store it, and send back to the client. 
             const token = jwt.sign({
                 name: 'foo'
             }, 'secret', { expiresIn: '1h'});
@@ -241,24 +249,36 @@ router.get("/user",  (request, response) => {
     console.log("GET /api/user");
     const access_token = request.headers.access_token
 
+    // TODO: check if the token is expired. If it is, delete it. 
     Token.findOne({ token: access_token }).then((token) => {
         if (token) {
             User.findOne({ email: token.user }).then((user) => {
-                let data = {};
+                if (user) {
+                    let data = {};
 
-                // Check scope and append key-values to the data depending on the allowed scope.
-                if (token.scope == "name") {
-                    data.name = user.name
-                } 
-                if (token.scope == "email") {
-                    data.email = user.email
+                    // Check scope and append key-values to the data depending on the allowed scope.
+                    // TODO: More robust scope checking. Could have scope with both name and email. Also, the type of access (e.g. read)
+                    if (token.scope == "name") {
+                        data.name = user.name
+                    } 
+                    if (token.scope == "email") {
+                        data.email = user.email
+                    }
+    
+                    response.status(200).json({
+                        success: true,
+                        data: data
+                    });
+                } else {
+                    response.status(404).json({
+                        success: false
+                    });
                 }
-
-                response.status(200).json({
-                    success: true,
-                    data: data
-                })
             })
+        } else {
+            response.status(403).json({
+                status: false
+            });
         }
     })
     
