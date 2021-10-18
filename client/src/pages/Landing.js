@@ -5,7 +5,6 @@ import {
     Button,
     Container,
     Grid,
-    Paper,
     Fade
 } from "@material-ui/core";
 import pic from "../resources/oauth-landing-pic.png"
@@ -20,7 +19,7 @@ class Landing extends React.Component {
                 <Grid className="landing-grid" container spacing={0}>
                     <Grid className="grid-1" item sm={6} xs={12}>
                         <Container>
-                            <img src={pic} />
+                            <img alt="grpahic" src={pic} />
                         </Container>
                     </Grid>
                     <Grid className="grid-2" item sm={6} xs={12}>

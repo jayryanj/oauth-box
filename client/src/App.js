@@ -7,7 +7,6 @@ import Login from "./pages/Login";
 import NavBar from "./components/NavBar";
 import Intro from "./pages/Intro";
 import Simulation from './pages/Simulation';
-import Confirmation from './components/Confirmation';
 
 class App extends React.Component {
   render() {

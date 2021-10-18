@@ -1,11 +1,9 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import "../styles/Login.css";
 import { 
     Button,
     Fade,
-    Link,
     TextField,
     Typography
 } from "@material-ui/core";

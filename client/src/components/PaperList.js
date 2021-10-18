@@ -8,10 +8,7 @@ import {
 } from "@material-ui/core";
 
 class PaperList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+    
     render() {
         return(
             <Grow in={true}>

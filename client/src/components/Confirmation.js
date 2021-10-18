@@ -38,9 +38,6 @@ class Confirmation extends React.Component {
                         <p>
                             Authentication with the third-party service was successful. 
                         </p>
-                        <p>
-                            {this.state.url}
-                        </p>
                     </Container>
 
                 </Fade>
