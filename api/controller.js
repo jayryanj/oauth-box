@@ -71,7 +71,7 @@ router.get("/callback", (request, response) => {
             }
         })
         .then((userResponse) => {
-            // console.log(userResponse) // DEBUG
+            console.log(userResponse) // DEBUG
             response.redirect("http://localhost:3000/about/intro") // TODO: Need to change this in production/
         })
         .catch((error) => {
@@ -181,11 +181,6 @@ router.get("/oauth/authorize", (request, response) => {
                     message: "Successful login", 
                     redirect_uri: client.redirectURI,
                     code: grant.code,
-                    user: {
-                        _id: user._id, 
-                        name: user.name,
-                        email: user.email
-                    }
                 });
             })
 
@@ -216,7 +211,9 @@ router.post("/oauth/token", (request, response) => {
             }, 'secret', { expiresIn: '1h'});
     
             const accessToken = new Token({
-                token: token
+                token: token,
+                user: grant.user,
+                scope: grant.scope
             })
     
             accessToken.save().then(() => {
@@ -235,15 +232,33 @@ router.post("/oauth/token", (request, response) => {
 });
 
 
-// Protected resource endpoints - only authorized requests are allowed from either regular login or OAuth 2.0
+/**
+ * Endpoint - GET /api/user
+ * @description - Protected resource endpoints - only authorized requests are allowed from either regular login or OAuth 2.0
+ */
 // TODO: Delegate token authentication to passport.js by calling passpor.authenticate() (see the /api/oauth/authorize endpoint)
 router.get("/user",  (request, response) => {
     console.log("GET /api/user");
     const access_token = request.headers.access_token
-    Token.findOne({token: access_token}).then((token) => {
+
+    Token.findOne({ token: access_token }).then((token) => {
         if (token) {
-            console.log("Found token") // DEBUG
-            response.status(200).json({ message: "Hello from /user endpoint" })
+            User.findOne({ email: token.user }).then((user) => {
+                let data = {};
+
+                // Check scope and append key-values to the data depending on the allowed scope.
+                if (token.scope == "name") {
+                    data.name = user.name
+                } 
+                if (token.scope == "email") {
+                    data.email = user.email
+                }
+
+                response.status(200).json({
+                    success: true,
+                    data: data
+                })
+            })
         }
     })
     

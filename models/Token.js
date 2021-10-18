@@ -6,7 +6,15 @@ const TokenSchema = new Schema({
         type: String,
         require: true
     },
-    dateIssued: {
+    user: {
+        type: String,
+        required: true
+    },
+    scope: {
+        type: String,
+        required: true
+    },
+    issued: {
         type: Date,
         default: Date.now,
     },

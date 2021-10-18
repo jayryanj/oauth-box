@@ -6,10 +6,6 @@ const GrantSchema = new Schema({
         type: String,
         require: true
     },
-    dateIssued: {
-        type: Date,
-        default: Date.now,
-    },
     user: {
         type: String,
         require: true
@@ -17,6 +13,10 @@ const GrantSchema = new Schema({
     scope: {
         type: String,
         require: true
+    },
+    issued: {
+        type: Date,
+        default: Date.now,
     }
 });
 
