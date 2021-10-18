@@ -74,7 +74,8 @@ router.get("/callback", (request, response) => {
             }
         })
         .then((userResponse) => {
-            response.redirect("http://localhost:3000/about/intro") // TODO: Need to change this in production/
+            response.header("User", userResponse.data.data);
+            response.redirect("http://localhost:3000/about/intro"); // TODO: Need to change this in production/
         })
         .catch((error) => {
             console.log(error);
@@ -303,9 +304,5 @@ passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, don
         }
     });
 }));
-
-
-
-
 
 module.exports = router;
