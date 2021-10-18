@@ -277,7 +277,7 @@ router.get("/user",  (request, response) => {
             })
         } else {
             response.status(403).json({
-                status: false
+                success: false
             });
         }
     })
