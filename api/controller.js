@@ -67,14 +67,14 @@ router.get("/callback", (request, response) => {
         const token = tokenResponse.data.access_token; // Access token 
         console.log("Access token received. Contacting resource server for user data...")
 
-        axios.get("http://localhost:5000/api/user/", {
+        axios.get("http://localhost:5000/api/resource/user/", {
             headers: {
                 'access_token': token
             }
         })
         .then((userResponse) => {
-            response.header("User", userResponse.data.data);
-            response.redirect("http://localhost:3000/about/intro"); // TODO: Need to change this in production/
+            // TODO: Utilize the data and respond with the user's name from the resource server.
+            response.redirect("http://localhost:3000/about/intro"); // TODO: Need to change this in production
         })
         .catch((error) => {
             console.log(error);
@@ -241,8 +241,8 @@ router.post("/oauth/token", (request, response) => {
  * @description - Protected resource endpoints - only authorized requests are allowed from either regular login or OAuth 2.0
  */
 // TODO: Delegate token authentication to passport.js by calling passpor.authenticate() (see the /api/oauth/authorize endpoint)
-router.get("/user",  (request, response) => {
-    console.log("GET /api/user");
+router.get("/resource/user",  (request, response) => {
+    console.log("GET /api/resource/user");
     const access_token = request.headers.access_token
 
     // TODO: check if the token is expired. If it is, delete it. 

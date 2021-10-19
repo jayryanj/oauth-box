@@ -9,7 +9,6 @@ class Intro extends React.Component {
         return(
             <Container>
                 <Container>
-                    <h1>Welcome (user)!</h1>
                     <h1>
                         What is OAuth?
                     </h1>
