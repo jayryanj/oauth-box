@@ -35,13 +35,12 @@ router.get("/", (request, response) => {
  * @description - Will initiate OAuth 2.0 by redirecting user to the third-party authorization server.
  */
 router.get("/login", (request, response) => {
+    console.log("GET /api/login");
     const response_type = "code";
     const client_id = "9338563593176882"; 
     const scope = "name";
     const redirect_uri = encodeURIComponent("http://localhost:8080/api/callback"); // Need to URL encode this
     const state = "eqq8wOkP9e";
-
-    console.log("GET /api/login");
 
     // Build the redirect URL to the /authorize endpoint with the above query values
     const url = `http://localhost:5000/api/oauth/authorize?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`;
@@ -56,8 +55,8 @@ router.get("/login", (request, response) => {
  * @description - Callback endpoint that the authorization server will redirect the user to.
  */
 router.get("/callback", (request, response) => {
-    const code = request.query.code;
     console.log("GET /api/callback");
+    const code = request.query.code;
 
     console.log("Exchanging grant for access token from token endpoint...")
     // Call the \token endpoint here then redirect after confirmation.
@@ -80,8 +79,6 @@ router.get("/callback", (request, response) => {
         .catch((error) => {
             console.log(error);
         });
-
-        
     })
     .catch((error) => {
         console.log(error);
@@ -141,13 +138,12 @@ router.post("/register", (request, response) => {
  * @description - Get the OAuth login page for the third-party service.
  */
 router.get("/oauth/authorize", (request, response) => {
+    console.log("GET /api/oauth/authorize");
     const response_type = request.query.response_type;
     const client_id = request.query.client_id; 
     const scope = request.query.scope;
     const redirect_uri = encodeURIComponent(request.query.redirect_uri);
     const state = request.query.state;
-
-    console.log("GET /api/oauth/authorize");
 
     console.log("Redirecting user to client login page...")
     response.redirect(`http://localhost:3000/login?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`); // Need to change this for production
@@ -161,10 +157,9 @@ router.get("/oauth/authorize", (request, response) => {
  router.post("/oauth/authorize", passport.authenticate("local", { session: false }), (request, response) => {
     // Failure to pass passport.authenticate() is responded with 401 Unauthorized by default.
     // Anything here is if passport.authenticate() passes
-    console.log("POST /api/oauth/approve");
+    console.log("POST /api/oauth/authorize");
     const user = request.user;
     const client_id = request.header("client_id");
-    console.log("POST /api/oauth/authorize");
 
     console.log(`User: { name: "${user.name}", email: "${user.email}" } successfully logged in.`);
 

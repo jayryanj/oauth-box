@@ -92,7 +92,6 @@ class Login extends React.Component {
                             <b>Log in</b> to Third-Party Service
                         </Typography>
 
-
                         
                         <form onSubmit={this.onSubmit} noValidate autoComplete="off">
                             <div>

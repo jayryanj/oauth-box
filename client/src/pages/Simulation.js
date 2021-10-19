@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
 
-
 class Simulation extends React.Component {
     
     render() {
