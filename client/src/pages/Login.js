@@ -29,14 +29,14 @@ class Login extends React.Component {
             redirect_uri: params.get("redirect_uri"),
             oauth_state: params.get("state"),
             code: undefined
-        }
+        };
 
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this); 
     }
 
     onChange(e) {
-        this.setState({[e.target.name]: e.target.value})
+        this.setState({[e.target.name]: e.target.value});
     }
 
     onSubmit(e) {
@@ -56,7 +56,7 @@ class Login extends React.Component {
         const data = {
             email: this.state.email,
             password: this.state.password,
-        }
+        };
         
         axios.post("/api/oauth/authorize", data, config)
             .then((response) => {
@@ -69,7 +69,7 @@ class Login extends React.Component {
             })
             .catch((error) => {
                 console.log(error);
-            })
+            });
 
     }
 
@@ -81,12 +81,7 @@ class Login extends React.Component {
         } else {
             return(
                 <Fade in={true} >
-                    <Container className="login-container-main">
-                        <Container className="login-container-home">
-                            <Button className="login-button" component={NavLink} to="/" >
-                                <ArrowBackOutlinedIcon  /> Back to Home
-                            </Button>
-                        </Container>
+                    <Container className="login-container-main third-party">
     
                         <Typography className="login-header" variant="h3">
                             <b>Log in</b> to Third-Party Service

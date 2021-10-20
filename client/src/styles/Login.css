@@ -3,6 +3,11 @@
     text-align: center;
 }
 
+.third-party {
+    border: 1px solid rgb(201, 201, 201);
+    border-radius: 18px;
+}
+
 .login-container-home {
     text-align: left;
 }
