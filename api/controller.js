@@ -275,12 +275,13 @@ router.get("/resource/user",  (request, response) => {
                     // Check scope and append key-values to the data depending on the allowed scope.
                     // TODO: More robust scope checking. Could have scope with both name and email. Also, the type of access (e.g. read)
                     if (token.scope == "name") {
-                        data.name = user.name
+                        data.name = user.name;
                     } 
                     if (token.scope == "email") {
-                        data.email = user.email
+                        data.email = user.email;
                     }
-    
+                    
+                    console.log(`Responding to client with user data: ${user.name}`);
                     response.status(200).json({
                         success: true,
                         data: data
