@@ -42,6 +42,7 @@ router.get("/login", (request, response) => {
     const redirect_uri = encodeURIComponent("http://localhost:8080/api/callback"); // Need to URL encode this
     const state = "eqq8wOkP9e";
 
+    console.log("Starting OAuth 2.0 Authorization Code Flow...")
     // Build the redirect URL to the /authorize endpoint with the above query values
     const url = `http://localhost:5000/api/oauth/authorize?response_type=${response_type}&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`;
 
@@ -65,24 +66,43 @@ router.get("/callback", (request, response) => {
     })
     .then((tokenResponse) => {
         const token = tokenResponse.data.access_token; // Access token 
-        console.log("Access token received. Contacting resource server for user data...")
-
-        axios.get("http://localhost:5000/api/resource/user/", {
-            headers: {
-                'access_token': token
-            }
-        })
-        .then((userResponse) => {
-            // TODO: Utilize the data and respond with the user's name from the resource server.
-            response.redirect("http://localhost:3000/about/intro"); // TODO: Need to change this in production
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        console.log("Access token received. Redirecting user to /about/intro ...");
+        response.redirect("http://localhost:3000/about/intro"); // TODO: Need to change this in production
+        console.log("OAuth 2.0 Authorization Code Flow finished!")
     })
     .catch((error) => {
         console.log(error);
     })
+});
+
+
+/**
+ * 
+ */
+router.get("/user", (request, response) => {
+    console.log("GET /api/user");
+    // TODO: Implement sessions or tokenized authentication to retrieve the appropriate associated access token for the specific user
+    // Currently, this is going to be hard-coded.
+    Token.findOne({ user: "jessica@example.com" }).then((token) => {
+        if (token) {
+            axios.get("http://localhost:5000/api/resource/user", {
+                headers: {
+                    'access_token' : token.token
+                }
+            })
+            .then((userResponse) => {
+                response.status(200).json({
+                    success: true,
+                    data: userResponse.data.data
+                });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
+    })
+    
+
 });
 
 
