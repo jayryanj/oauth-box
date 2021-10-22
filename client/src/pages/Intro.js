@@ -20,7 +20,7 @@ class Intro extends React.Component {
     render() {
 
         return(
-            <Container>
+            <Container className="intro-container">
                 {
                     this.state.loading 
                     ?
@@ -30,7 +30,7 @@ class Intro extends React.Component {
                     :
                         <Container>
                             <Container>
-                                <h2>Welcome {this.state.name}!</h2>
+                                <h2 className="welcome">Welcome {this.state.name}!</h2>
                                 <h2>
                                     What is OAuth?
                                 </h2>
@@ -41,7 +41,23 @@ class Intro extends React.Component {
                             <Container>
                                 <h2>What does OAuth look like?</h2>
                                 <p>
-                                    To the user, OAuth often looks like a "Sign in with _____" button such as the ones shown below:
+                                    To the user, OAuth often looks like a "Sign in with _____" button. 
+                                </p>
+                            </Container>
+                            <Container>
+                                <h2>Parts of the OAuth Authorization Code Flow</h2>
+                                <p>There are four entities involved in the OAuth 2.0 authorization code flow:</p>
+                                <p>
+                                    <b>Resource Owner</b> - Typically the user that owns the data that the client web app is trying to access
+                                </p>
+                                <p>
+                                    <b>Client</b> - A web application that is using OAuth to request access to the resource owner's data.
+                                </p>
+                                <p>
+                                    <b>Authorization Server</b> - The server for the third-party service that handles authorization requests from clients to access the protected resources. THe authorization grants access by authenticating the resource owner and authorization the client by exchanging an access token.
+                                </p>
+                                <p>
+                                    <b>Resource Server</b> - The server for the third-party service which holds the protected resources of the owner.
                                 </p>
                             </Container>
                         </Container>
