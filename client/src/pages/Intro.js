@@ -2,7 +2,7 @@ import "../styles/Intro.css"
 import React from "react";
 import {
     Container,
-    CircularProgress
+    LinearProgress
 } from "@material-ui/core"
 import axios from "axios";
 
@@ -25,7 +25,7 @@ class Intro extends React.Component {
                     this.state.loading 
                     ?
                         <Container className="progress-container">
-                            <CircularProgress size={"10em"} />
+                            <LinearProgress size={"10em"} />
                         </Container>
                     :
                         <Container>
