@@ -17,7 +17,7 @@ class Welcome extends React.Component {
         return(
             <Fade in>
                 <Container>
-                    <h2 className="welcome">Welcome {this.state.name}!</h2>
+                    <h2 className="welcome">Welcome <i>{this.state.name}! </i></h2>
                 </Container>
             </Fade>
         );

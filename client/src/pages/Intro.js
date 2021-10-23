@@ -5,8 +5,8 @@ import {
     LinearProgress
 } from "@material-ui/core"
 import axios from "axios";
-
 import Welcome from "../components/Welcome";
+import buttonsPic from "../resources/OAuth_buttons.png"
 
 class Intro extends React.Component {
 
@@ -44,7 +44,11 @@ class Intro extends React.Component {
                             <Container>
                                 <h2>What does OAuth look like?</h2>
                                 <p>
-                                    To the user, OAuth often looks like a "Sign in with _____" button. 
+                                    To the user, OAuth often looks like a "Sign-in/Continue with _____" button. 
+                                </p>
+                                <img src={buttonsPic} alt="buttons" />
+                                <p>
+                                    These buttons initialize the OAuth flow with the service that you choose whether it's Google, Facebook, etc.
                                 </p>
                             </Container>
                             <Container>
