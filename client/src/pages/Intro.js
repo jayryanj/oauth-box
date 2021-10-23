@@ -6,6 +6,8 @@ import {
 } from "@material-ui/core"
 import axios from "axios";
 
+import Welcome from "../components/Welcome";
+
 class Intro extends React.Component {
 
     constructor(props) {
@@ -29,8 +31,9 @@ class Intro extends React.Component {
                         </Container>
                     :
                         <Container>
+                            <Welcome name={this.state.name} />
+
                             <Container>
-                                <h2 className="welcome">Welcome {this.state.name}!</h2>
                                 <h2>
                                     What is OAuth?
                                 </h2>
