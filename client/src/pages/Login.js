@@ -1,5 +1,4 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
 import "../styles/Login.css";
 import { 
     Button,
@@ -9,7 +8,6 @@ import {
 } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import Confirmation from "../components/Confirmation";
-import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBackOutlined';
 import axios from "axios";
 
 class Login extends React.Component {
