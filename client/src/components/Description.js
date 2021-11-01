@@ -1,12 +1,23 @@
 import React from "react";
 import {
-    Container
+    Container,
+    Tabs
 } from "@material-ui/core";
 
 
-class Description {
+class Description extends React.Component{
     render() {
+
         return(
+            <Container>
+                <Tabs>
+
+                </Tabs>
+            </Container>
+        );
+
+
+        /*return(
             <Container>
                 <Container>
                     <h2>
@@ -43,7 +54,7 @@ class Description {
                     </p>
                 </Container>
             </Container>
-        );
+        );*/
     }
 }
 

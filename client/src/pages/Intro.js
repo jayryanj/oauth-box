@@ -6,7 +6,8 @@ import {
 } from "@material-ui/core"
 import axios from "axios";
 import Welcome from "../components/Welcome";
-import buttonsPic from "../resources/OAuth_buttons.png"
+import Description from "../components/Description";
+import buttonsPic from "../resources/OAuth_buttons.png";
 
 class Intro extends React.Component {
 
@@ -20,7 +21,6 @@ class Intro extends React.Component {
     }
 
     render() {
-
         return(
             <Container className="intro-container">
                 {
@@ -32,6 +32,7 @@ class Intro extends React.Component {
                     :
                         <Container>
                             <Welcome name={this.state.name} />
+                            <Description />
                         </Container>
                 }
             </Container>

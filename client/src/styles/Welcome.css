@@ -1,0 +1,23 @@
+.welcome-container {
+    text-align: center;
+    margin-top: 5%;
+}
+
+.hello-header {
+    font-size: 120px;
+    background: #FBDA61;
+    background: -webkit-linear-gradient(to right, #FBDA61 35%, #FF5ACD 65%);
+    background: -moz-linear-gradient(to right, #FBDA61 35%, #FF5ACD 65%);
+    background: linear-gradient(to right, #FBDA61 35%, #FF5ACD 65%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 1%;
+    
+}
+
+.welcome-header {
+    text-align: center;
+    font-size: 20px;
+    color: rgb(122, 122, 122);
+    margin-top: 0px;
+}
