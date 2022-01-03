@@ -1,7 +1,9 @@
+import styles from "../styles/Description.module.css";
 import React from "react";
 import {
     Container,
-    Tabs
+    Tabs,
+    Tab
 } from "@material-ui/core";
 
 
@@ -9,9 +11,12 @@ class Description extends React.Component{
     render() {
 
         return(
-            <Container>
-                <Tabs>
-
+            <Container className={styles.container}>
+                <Tabs centered>
+                    <Tab label="OAuth 2.0"/>
+                    <Tab label="Actors"/>
+                    <Tab label="Authorization Code Flow"/>
+                    <Tab label="Tokens" />
                 </Tabs>
             </Container>
         );
