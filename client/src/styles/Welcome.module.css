@@ -1,10 +1,10 @@
-.welcome-container {
+.container {
     text-align: center;
     margin-top: 5%;
 }
 
-.hello-header {
-    font-size: 120px;
+.hello {
+    font-size: 100px;
     background: #FBDA61;
     background: -webkit-linear-gradient(to right, #FBDA61 35%, #FF5ACD 65%);
     background: -moz-linear-gradient(to right, #FBDA61 35%, #FF5ACD 65%);
@@ -15,7 +15,7 @@
     
 }
 
-.welcome-header {
+.welcome {
     text-align: center;
     font-size: 20px;
     color: rgb(122, 122, 122);

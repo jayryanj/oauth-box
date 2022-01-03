@@ -3,7 +3,7 @@ import {
     Container,
     Fade
 } from "@material-ui/core"
-import "../styles/Welcome.css";
+import styles from "../styles/Welcome.module.css";
 
 class Welcome extends React.Component {
     constructor(props) {
@@ -17,9 +17,9 @@ class Welcome extends React.Component {
     render() {
         return(
             <Fade in>
-                <Container className="welcome-container">
-                    <h1 className="hello-header">Hello!</h1>
-                    <p className="welcome-header">It's good to see you, <i>{this.state.name}.</i></p>
+                <Container className={styles.container}>
+                    <h1 className={styles.hello}>Hello!</h1>
+                    <p className={styles.welcome}>It's good to see you, <i>{this.state.name}.</i></p>
                 </Container>
             </Fade>
         );
